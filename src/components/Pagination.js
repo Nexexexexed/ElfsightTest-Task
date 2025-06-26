@@ -1,42 +1,47 @@
 import styled from 'styled-components';
 import { useData } from './providers';
+import { useCallback } from 'react';
 
 export function Pagination() {
   const { info, currentPage, updatePage } = useData();
 
-  if (!info?.pages || info.pages <= 1) return null;
+  const goToFirstPage = useCallback(() => updatePage(1), [updatePage]);
+  const goToLastPage = useCallback(() => updatePage(info.pages), [
+    updatePage,
+    info.pages
+  ]);
+  const goToPrevPage = useCallback(() => updatePage(currentPage - 1), [
+    updatePage,
+    currentPage
+  ]);
+  const goToNextPage = useCallback(() => updatePage(currentPage + 1), [
+    updatePage,
+    currentPage
+  ]);
 
-  const handlePageClick = (pageNumber) => {
-    updatePage(pageNumber);
-  };
+  if (!info?.pages || info.pages <= 1) return null;
 
   return (
     <StyledPagination>
       {currentPage > 1 && (
         <>
-          <Page onClick={() => handlePageClick(1)}>« First</Page>
+          <Page onClick={goToFirstPage}>« First</Page>
           {currentPage > 2 && <Ellipsis>...</Ellipsis>}
         </>
       )}
 
-      {currentPage > 1 && (
-        <Page onClick={() => handlePageClick(currentPage - 1)}>
-          {currentPage - 1}
-        </Page>
-      )}
+      {currentPage > 1 && <Page onClick={goToPrevPage}>{currentPage - 1}</Page>}
 
       <Page active>{currentPage}</Page>
 
       {currentPage < info.pages && (
-        <Page onClick={() => handlePageClick(currentPage + 1)}>
-          {currentPage + 1}
-        </Page>
+        <Page onClick={goToNextPage}>{currentPage + 1}</Page>
       )}
 
       {currentPage < info.pages - 1 && (
         <>
           {currentPage < info.pages - 2 && <Ellipsis>...</Ellipsis>}
-          <Page onClick={() => handlePageClick(info.pages)}>Last »</Page>
+          <Page onClick={goToLastPage}>Last »</Page>
         </>
       )}
     </StyledPagination>

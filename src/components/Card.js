@@ -3,7 +3,6 @@ import { ReactComponent as Male } from '../assets/genders/male.svg';
 import { ReactComponent as Female } from '../assets/genders/female.svg';
 import { ReactComponent as Genderless } from '../assets/genders/genderless.svg';
 
-// TODO: Refactor the Card component
 export function Card(props) {
   const { image, name, onClickHandler, ...rest } = props;
 

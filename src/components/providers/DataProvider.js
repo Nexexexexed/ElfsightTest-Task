@@ -15,7 +15,7 @@ export function DataProvider({ children }) {
   const [isFetching, setIsFetching] = useState(false);
   const [isError, setIsError] = useState(false);
   const [info, setInfo] = useState({});
-  const [currentPage, setCurrentPage] = useState(1); // Единая система нумерации (начинается с 1)
+  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     name: '',
     status: '',
@@ -23,7 +23,7 @@ export function DataProvider({ children }) {
     type: '',
     gender: ''
   });
-  const [appliedFilters, setAppliedFilters] = useState({}); // Отдельное состояние для применённых фильтров
+  const [appliedFilters, setAppliedFilters] = useState({});
 
   const buildApiUrl = useCallback(() => {
     const params = new URLSearchParams();

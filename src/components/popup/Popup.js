@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { PopupEpisodes } from './PopupEpisodes';
 import { PopupHeader } from './PopupHeader';
 import { PopupInfo } from './PopupInfo';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export function Popup({ settings: { visible, content = {} }, setSettings }) {
   const {
@@ -29,8 +29,35 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     [setSettings]
   );
 
+  const handleEsc = useCallback(
+    (e) => {
+      if (e.key === 'Escape' && visible) {
+        setSettings((prev) => ({ ...prev, visible: false }));
+      }
+    },
+    [visible, setSettings]
+  );
+
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [visible]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEsc);
+
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [handleEsc]);
+
   return (
-    <PopupContainer visible={visible}>
+    <PopupContainer visible={visible} onClick={togglePopup}>
       <StyledPopup>
         <CloseIcon onClick={togglePopup} />
 
